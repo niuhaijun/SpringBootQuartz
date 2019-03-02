@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
-<mapper namespace="com.example.demo.dao.JobAndTriggerMapper">  
-    
-    <select id="getJobAndTriggerDetails" resultType="com.example.demo.entity.JobAndTrigger">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.JobAndTriggerMapper">
+
+  <select id="getJobAndTriggerDetails" resultType="com.example.demo.entity.JobAndTrigger">
 			SELECT
 				qrtz_job_details.JOB_NAME,
 				qrtz_job_details.JOB_GROUP,
@@ -18,5 +19,5 @@
 			AND qrtz_triggers.TRIGGER_NAME = qrtz_cron_triggers.TRIGGER_NAME
 			AND qrtz_triggers.TRIGGER_GROUP = qrtz_cron_triggers.TRIGGER_GROUP
     </select>
-    
+
 </mapper>
