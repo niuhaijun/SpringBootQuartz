@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.common.Message;
+import com.example.demo.common.CommonResponse;
 import com.example.demo.entity.ScheduleJob;
 import com.example.demo.service.ScheduleJobService;
 import java.util.List;
@@ -21,122 +21,122 @@ public class RestfulController {
   private ScheduleJobService scheduleJobService;
 
   @RequestMapping("/metaData")
-  public Message metaData() {
+  public CommonResponse metaData() {
 
-    Message message = Message.failure();
+    CommonResponse commonResponse = CommonResponse.failure();
     try {
       SchedulerMetaData metaData = scheduleJobService.getMetaData();
-      message = Message.success();
-      message.setData(metaData);
+      commonResponse = CommonResponse.success();
+      commonResponse.setData(metaData);
     } catch (Exception e) {
-      message.setMsg(e.getMessage());
+      commonResponse.setMsg(e.getMessage());
       logger.error("metaData ex:", e);
     }
-    return message;
+    return commonResponse;
   }
 
   @RequestMapping("/getAllJobs")
-  public Message getAllJobs() {
+  public CommonResponse getAllJobs() {
 
-    Message message = Message.failure();
+    CommonResponse commonResponse = CommonResponse.failure();
     try {
       List<ScheduleJob> jobList = scheduleJobService.getAllJobList();
-      message = Message.success();
-      message.setData(jobList);
+      commonResponse = CommonResponse.success();
+      commonResponse.setData(jobList);
     } catch (Exception e) {
-      message.setMsg(e.getMessage());
+      commonResponse.setMsg(e.getMessage());
       logger.error("getAllJobs ex:", e);
     }
-    return message;
+    return commonResponse;
   }
 
   @RequestMapping("/getRunningJobs")
-  public Message getRunningJobs()  {
+  public CommonResponse getRunningJobs()  {
 
-    Message message = Message.failure();
+    CommonResponse commonResponse = CommonResponse.failure();
     try {
       List<ScheduleJob> jobList = scheduleJobService.getRunningJobList();
-      message = Message.success();
-      message.setData(jobList);
+      commonResponse = CommonResponse.success();
+      commonResponse.setData(jobList);
     } catch (Exception e) {
-      message.setMsg(e.getMessage());
+      commonResponse.setMsg(e.getMessage());
       logger.error("getRunningJobs ex:", e);
     }
-    return message;
+    return commonResponse;
   }
 
   @RequestMapping(value = "/pauseJob")
   public Object pauseJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
-    Message message = Message.failure();
+    CommonResponse commonResponse = CommonResponse.failure();
     try {
       scheduleJobService.pauseJob(job);
-      message = Message.success();
+      commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      message.setMsg(e.getMessage());
+      commonResponse.setMsg(e.getMessage());
       logger.error("pauseJob ex:", e);
     }
-    return message;
+    return commonResponse;
   }
 
   @RequestMapping(value = "/resumeJob")
   public Object resumeJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
-    Message message = Message.failure();
+    CommonResponse commonResponse = CommonResponse.failure();
     try {
       scheduleJobService.resumeJob(job);
-      message = Message.success();
+      commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      message.setMsg(e.getMessage());
+      commonResponse.setMsg(e.getMessage());
       logger.error("resumeJob ex:", e);
     }
-    return message;
+    return commonResponse;
   }
 
   @RequestMapping(value = "/deleteJob")
   public Object deleteJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
-    Message message = Message.failure();
+    CommonResponse commonResponse = CommonResponse.failure();
     try {
       scheduleJobService.deleteJob(job);
-      message = Message.success();
+      commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      message.setMsg(e.getMessage());
+      commonResponse.setMsg(e.getMessage());
       logger.error("deleteJob ex:", e);
     }
-    return message;
+    return commonResponse;
   }
 
   @RequestMapping(value = "/runJob")
   public Object runJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
-    Message message = Message.failure();
+    CommonResponse commonResponse = CommonResponse.failure();
     try {
       scheduleJobService.runJobOnce(job);
-      message = Message.success();
+      commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      message.setMsg(e.getMessage());
+      commonResponse.setMsg(e.getMessage());
       logger.error("runJob ex:", e);
     }
-    return message;
+    return commonResponse;
   }
 
   @RequestMapping(value = "/saveOrUpdate")
   public Object saveOrUpdate(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
-    Message message = Message.failure();
+    CommonResponse commonResponse = CommonResponse.failure();
     try {
       scheduleJobService.saveOrUpdate(job);
-      message = Message.success();
+      commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      message.setMsg(e.getMessage());
+      commonResponse.setMsg(e.getMessage());
       logger.error("updateCron ex:", e);
     }
-    return message;
+    return commonResponse;
   }
 }
