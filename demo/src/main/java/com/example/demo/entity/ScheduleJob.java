@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ScheduleJob implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = -8666047057613317299L;
 
   private String jobId;
 

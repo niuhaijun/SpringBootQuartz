@@ -51,7 +51,7 @@ public class RestfulController {
   }
 
   @RequestMapping("/getRunningJobs")
-  public CommonResponse getRunningJobs()  {
+  public CommonResponse getRunningJobs() {
 
     CommonResponse commonResponse = CommonResponse.failure();
     try {

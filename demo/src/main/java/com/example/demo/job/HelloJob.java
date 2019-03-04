@@ -1,6 +1,6 @@
 package com.example.demo.job;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -10,15 +10,10 @@ public class HelloJob implements BaseJob {
 
   private static Logger _log = LoggerFactory.getLogger(HelloJob.class);
 
-  public HelloJob() {
-
-  }
-
   @Override
   public void execute(JobExecutionContext context)
       throws JobExecutionException {
 
-    _log.info("Hello Job执行时间: " + new Date());
-
+    _log.info("Hello Job执行时间: " + LocalDateTime.now());
   }
 }  

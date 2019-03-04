@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class JobInfoVO implements Serializable {
 
+  private static final long serialVersionUID = -656999777807789548L;
+
   private String jobClassName;
   private String jobGroupName;
   private String cronExpression;

@@ -39,7 +39,6 @@ public class QuartzJobFactory implements Job {
     return jobList;
   }
 
-
   @Override
   public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
