@@ -3,7 +3,8 @@ package com.example.demo;
 import java.io.IOException;
 import java.util.Properties;
 import org.quartz.Scheduler;
-import org.quartz.ee.servlet.QuartzInitializerListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,8 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 @Configuration
 public class SchedulerConfig {
+
+  private static Logger log = LoggerFactory.getLogger(SchedulerConfig.class);
 
   @Bean(name = "SchedulerFactory")
   public SchedulerFactoryBean schedulerFactoryBean() throws IOException {
@@ -31,22 +34,23 @@ public class SchedulerConfig {
     return propertiesFactoryBean.getObject();
   }
 
-  /*
-   * quartz初始化监听器
-   */
-  @Bean
-  public QuartzInitializerListener executorListener() {
-
-    return new QuartzInitializerListener();
-  }
+//  /*
+//   * quartz初始化监听器
+//   */
+//  @Bean
+//  public QuartzInitializerListener executorListener() {
+//
+//    return new QuartzInitializerListener();
+//  }
 
   /*
    * 通过SchedulerFactoryBean获取Scheduler的实例
    */
   @Bean(name = "Scheduler")
-  public Scheduler scheduler() throws IOException {
+  public Scheduler scheduler() throws Exception {
 
-    return schedulerFactoryBean().getScheduler();
+    Scheduler scheduler = schedulerFactoryBean().getScheduler();
+    return scheduler;
   }
 
 }

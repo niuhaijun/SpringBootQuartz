@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.JobAndTrigger;
-import com.example.demo.entity.JobInfoVO;
 import com.example.demo.job.BaseJob;
 import com.example.demo.service.IJobAndTriggerService;
 import com.github.pagehelper.PageInfo;
@@ -23,13 +22,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @Author: niuhaijun
- * @Date: 2019-03-04 17:37
- * @Version 1.0
- */
+
 @RestController
 @RequestMapping(value = "/job")
 public class JobController {
@@ -43,21 +39,25 @@ public class JobController {
   @Qualifier("Scheduler")
   private Scheduler scheduler;
 
-  public BaseJob getClass(String classname) throws Exception {
+  public static BaseJob getClass(String classname) throws Exception {
 
     Class<?> class1 = Class.forName(classname);
     return (BaseJob) class1.newInstance();
   }
 
   @PostMapping(value = "/addjob")
-  public void addJob(JobInfoVO jobInfoVO) throws Exception {
+  public void addjob(@RequestParam(value = "jobClassName") String jobClassName,
+      @RequestParam(value = "jobGroupName") String jobGroupName,
+      @RequestParam(value = "cronExpression") String cronExpression) throws Exception {
 
-    String jobGroupName = jobInfoVO.getJobGroupName();
-    String jobClassName = jobInfoVO.getJobClassName();
-    String cronExpression = jobInfoVO.getCronExpression();
+    addJob(jobClassName, jobGroupName, cronExpression);
+  }
 
-//    // 启动调度器
-//    scheduler.start();
+  public void addJob(String jobClassName, String jobGroupName, String cronExpression)
+      throws Exception {
+
+    // 启动调度器
+    scheduler.start();
 
     //构建job信息
     JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass())
@@ -80,29 +80,39 @@ public class JobController {
   }
 
   @PostMapping(value = "/pausejob")
-  public void pauseJob(JobInfoVO jobInfoVO) throws Exception {
+  public void pausejob(@RequestParam(value = "jobClassName") String jobClassName,
+      @RequestParam(value = "jobGroupName") String jobGroupName) throws Exception {
 
-    String jobGroupName = jobInfoVO.getJobGroupName();
-    String jobClassName = jobInfoVO.getJobClassName();
+    jobPause(jobClassName, jobGroupName);
+  }
+
+  public void jobPause(String jobClassName, String jobGroupName) throws Exception {
 
     scheduler.pauseJob(JobKey.jobKey(jobClassName, jobGroupName));
   }
 
   @PostMapping(value = "/resumejob")
-  public void resumeJob(JobInfoVO jobInfoVO) throws Exception {
+  public void resumejob(@RequestParam(value = "jobClassName") String jobClassName,
+      @RequestParam(value = "jobGroupName") String jobGroupName) throws Exception {
 
-    String jobGroupName = jobInfoVO.getJobGroupName();
-    String jobClassName = jobInfoVO.getJobClassName();
+    jobresume(jobClassName, jobGroupName);
+  }
+
+  public void jobresume(String jobClassName, String jobGroupName) throws Exception {
 
     scheduler.resumeJob(JobKey.jobKey(jobClassName, jobGroupName));
   }
 
   @PostMapping(value = "/reschedulejob")
-  public void rescheduleJob(JobInfoVO jobInfoVO) throws Exception {
+  public void rescheduleJob(@RequestParam(value = "jobClassName") String jobClassName,
+      @RequestParam(value = "jobGroupName") String jobGroupName,
+      @RequestParam(value = "cronExpression") String cronExpression) throws Exception {
 
-    String jobGroupName = jobInfoVO.getJobGroupName();
-    String jobClassName = jobInfoVO.getJobClassName();
-    String cronExpression = jobInfoVO.getCronExpression();
+    jobreschedule(jobClassName, jobGroupName, cronExpression);
+  }
+
+  public void jobreschedule(String jobClassName, String jobGroupName, String cronExpression)
+      throws Exception {
 
     try {
       TriggerKey triggerKey = TriggerKey.triggerKey(jobClassName, jobGroupName);
@@ -124,10 +134,13 @@ public class JobController {
   }
 
   @PostMapping(value = "/deletejob")
-  public void deleteJob(JobInfoVO jobInfoVO) throws Exception {
+  public void deletejob(@RequestParam(value = "jobClassName") String jobClassName,
+      @RequestParam(value = "jobGroupName") String jobGroupName) throws Exception {
 
-    String jobGroupName = jobInfoVO.getJobGroupName();
-    String jobClassName = jobInfoVO.getJobClassName();
+    jobdelete(jobClassName, jobGroupName);
+  }
+
+  public void jobdelete(String jobClassName, String jobGroupName) throws Exception {
 
     scheduler.pauseTrigger(TriggerKey.triggerKey(jobClassName, jobGroupName));
     scheduler.unscheduleJob(TriggerKey.triggerKey(jobClassName, jobGroupName));
@@ -135,17 +148,16 @@ public class JobController {
   }
 
   @GetMapping(value = "/queryjob")
-  public Map<String, Object> queryJob(JobInfoVO jobInfoVO) {
-
-    Integer pageNum = jobInfoVO.getPageNum();
-    Integer pageSize = jobInfoVO.getPageSize();
+  public Map<String, Object> queryjob(@RequestParam(value = "pageNum") Integer pageNum,
+      @RequestParam(value = "pageSize") Integer pageSize) {
 
     PageInfo<JobAndTrigger> jobAndTrigger = iJobAndTriggerService
         .getJobAndTriggerDetails(pageNum, pageSize);
-    Map<String, Object> map = new HashMap<>();
+    Map<String, Object> map = new HashMap<String, Object>();
     map.put("JobAndTrigger", jobAndTrigger);
     map.put("number", jobAndTrigger.getTotal());
     return map;
   }
+
 
 }

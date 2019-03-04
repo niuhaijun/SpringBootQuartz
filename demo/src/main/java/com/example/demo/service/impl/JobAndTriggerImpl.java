@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dao.JobAndTriggerMapper;
 import com.example.demo.entity.JobAndTrigger;
+import com.example.demo.mapper.JobAndTriggerMapper;
 import com.example.demo.service.IJobAndTriggerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
