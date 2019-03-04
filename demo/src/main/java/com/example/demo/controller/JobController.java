@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/job")
 public class JobController {
 
-  private static Logger log = LoggerFactory.getLogger(JobController.class);
+  private static final Logger LOGGGER = LoggerFactory.getLogger(JobController.class);
 
   @Autowired
   private IJobAndTriggerService iJobAndTriggerService;
@@ -56,8 +56,8 @@ public class JobController {
     String jobClassName = jobInfoVO.getJobClassName();
     String cronExpression = jobInfoVO.getCronExpression();
 
-//    // 启动调度器
-//    scheduler.start();
+    // 启动调度器
+    scheduler.start();
 
     //构建job信息
     JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass())
@@ -147,5 +147,4 @@ public class JobController {
     map.put("number", jobAndTrigger.getTotal());
     return map;
   }
-
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class JobAndTriggerImpl implements IJobAndTriggerService {
+public class JobAndTriggerServiceImpl implements IJobAndTriggerService {
 
   @Autowired
   private JobAndTriggerMapper jobAndTriggerMapper;
