@@ -14,7 +14,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 @Configuration
 public class SchedulerConfig {
 
-  private static Logger log = LoggerFactory.getLogger(SchedulerConfig.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
 
   @Bean(name = "SchedulerFactory")
   public SchedulerFactoryBean schedulerFactoryBean() throws IOException {
