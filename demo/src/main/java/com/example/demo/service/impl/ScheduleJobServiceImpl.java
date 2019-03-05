@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.JobInfoVO;
 import com.example.demo.entity.ScheduleJob;
 import com.example.demo.job.QuartzJobFactory;
-import com.example.demo.mapper.JobAndTriggerMapper;
+import com.example.demo.mapper.JobMapper;
 import com.example.demo.service.ScheduleJobService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -42,7 +42,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
   private Scheduler scheduler;
 
   @Autowired
-  private JobAndTriggerMapper jobAndTriggerMapper;
+  private JobMapper jobMapper;
 
   @Override
   public List<ScheduleJob> getAllJobList() throws SchedulerException {
@@ -210,7 +210,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
   public PageInfo<JobInfoVO> getJobAndTriggerDetails(int pageNum, int pageSize) {
 
     PageHelper.startPage(pageNum, pageSize);
-    List<JobInfoVO> list = jobAndTriggerMapper.getJobAndTriggerDetails();
+    List<JobInfoVO> list = jobMapper.getJobAndTriggerDetails();
     PageInfo<JobInfoVO> page = new PageInfo<>(list);
     return page;
   }
