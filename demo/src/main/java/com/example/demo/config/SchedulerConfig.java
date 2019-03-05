@@ -28,7 +28,7 @@ public class SchedulerConfig {
     return jobFactory;
   }
 
-  @Bean(name = "SchedulerFactory")
+  @Bean(name = "schedulerFactory")
   public SchedulerFactoryBean schedulerFactoryBean(JobFactory jobFactory) throws Exception {
 
     SchedulerFactoryBean factory = new SchedulerFactoryBean();
@@ -42,7 +42,7 @@ public class SchedulerConfig {
   /**
    * 通过SchedulerFactoryBean获取Scheduler的实例
    */
-  @Bean(name = "Scheduler")
+  @Bean(name = "scheduler")
   public Scheduler scheduler(JobFactory jobFactory) throws Exception {
 
     Scheduler scheduler = schedulerFactoryBean(jobFactory).getScheduler();

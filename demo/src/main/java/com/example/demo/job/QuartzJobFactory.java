@@ -1,5 +1,6 @@
-package com.example.demo.entity;
+package com.example.demo.job;
 
+import com.example.demo.entity.ScheduleJob;
 import com.example.demo.service.SampleService;
 import com.google.common.collect.Lists;
 import java.util.List;

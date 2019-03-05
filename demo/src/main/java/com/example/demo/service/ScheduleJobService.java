@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.QuartzJobFactory;
+import com.example.demo.job.QuartzJobFactory;
 import com.example.demo.entity.ScheduleJob;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import org.springframework.util.StringUtils;
 public class ScheduleJobService {
 
   @Autowired
-  @Qualifier("Scheduler")
+  @Qualifier("scheduler")
   private Scheduler scheduler;
 
   public List<ScheduleJob> getAllJobList() throws SchedulerException {
