@@ -51,8 +51,6 @@ public class QuartzJobFactory implements Job {
     // spring bean can be @Autowired
     sampleService.hello(jobName);
 
-    // use rabbit MQ to asynchronously notify the task execution in business system
-    // sender.send(scheduleJob.getInterfaceName());
 
     // simulate time-consuming task
     if (jobName.equals("job_name_4") || jobName.equals("addjob")) {

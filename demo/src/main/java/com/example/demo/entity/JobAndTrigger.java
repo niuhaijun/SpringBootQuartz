@@ -6,6 +6,7 @@ import java.math.BigInteger;
 public class JobAndTrigger implements Serializable {
 
   private static final long serialVersionUID = 4366753237853539353L;
+
   private String JOB_NAME;
   private String JOB_GROUP;
   private String JOB_CLASS_NAME;

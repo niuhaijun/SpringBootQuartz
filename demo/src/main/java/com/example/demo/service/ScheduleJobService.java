@@ -106,7 +106,6 @@ public class ScheduleJobService {
         .withSchedule(cronScheduleBuilder).build();
 
     scheduler.scheduleJob(jobDetail, trigger);
-
   }
 
   public void pauseJob(ScheduleJob scheduleJob) throws SchedulerException {

@@ -41,7 +41,7 @@ public class JobController {
   private IJobAndTriggerService iJobAndTriggerService;
 
   @Autowired
-  @Qualifier("Scheduler")
+  @Qualifier("scheduler")
   private Scheduler scheduler;
 
 //  public BaseJob getClass(String classname) throws Exception {
