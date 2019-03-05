@@ -26,7 +26,6 @@ public class ScheduleJobController {
 
   private static final Logger logger = LoggerFactory.getLogger(ScheduleJobController.class);
 
-  /**  汇总的方法          */
   @Autowired
   private ScheduleJobService scheduleJobService;
 
@@ -59,7 +58,7 @@ public class ScheduleJobController {
       commonResponse = CommonResponse.success();
       commonResponse.setData(metaData);
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("metaData ex:", e);
     }
     return commonResponse;
@@ -77,7 +76,7 @@ public class ScheduleJobController {
       commonResponse = CommonResponse.success();
       commonResponse.setData(jobList);
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("getAllJobs ex:", e);
     }
     return commonResponse;
@@ -95,7 +94,7 @@ public class ScheduleJobController {
       commonResponse = CommonResponse.success();
       commonResponse.setData(jobList);
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("getRunningJobs ex:", e);
     }
     return commonResponse;
@@ -110,7 +109,7 @@ public class ScheduleJobController {
       scheduleJobService.pauseJob(job);
       commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("pauseJob ex:", e);
     }
     return commonResponse;
@@ -125,7 +124,7 @@ public class ScheduleJobController {
       scheduleJobService.resumeJob(job);
       commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("resumeJob ex:", e);
     }
     return commonResponse;
@@ -140,7 +139,7 @@ public class ScheduleJobController {
       scheduleJobService.deleteJob(job);
       commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("deleteJob ex:", e);
     }
     return commonResponse;
@@ -155,7 +154,7 @@ public class ScheduleJobController {
       scheduleJobService.runJobOnce(job);
       commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("runJob ex:", e);
     }
     return commonResponse;
@@ -170,7 +169,7 @@ public class ScheduleJobController {
       scheduleJobService.addJob(job);
       commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("updateCron ex:", e);
     }
     return commonResponse;
@@ -185,7 +184,7 @@ public class ScheduleJobController {
       scheduleJobService.updateJobCronExpression(job);
       commonResponse = CommonResponse.success();
     } catch (Exception e) {
-      commonResponse.setMsg(e.getMessage());
+      commonResponse.setMsg(e.toString());
       logger.error("updateCron ex:", e);
     }
     return commonResponse;
