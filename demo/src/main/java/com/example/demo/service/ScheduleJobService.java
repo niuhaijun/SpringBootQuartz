@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.JobInfoVO;
-import com.example.demo.entity.ScheduleJob;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
 import org.quartz.SchedulerException;
@@ -14,24 +13,21 @@ import org.quartz.SchedulerMetaData;
  */
 public interface ScheduleJobService {
 
-  List<ScheduleJob> getAllJobList() throws SchedulerException;
+  List<JobInfoVO> getAllJobList() throws SchedulerException;
 
-  List<ScheduleJob> getRunningJobList() throws SchedulerException;
+  List<JobInfoVO> getRunningJobList() throws SchedulerException;
 
-//  void saveOrUpdate(ScheduleJob scheduleJob) throws Exception;
+  void addJob(JobInfoVO scheduleJob) throws Exception;
 
-  void addJob(ScheduleJob scheduleJob) throws Exception;
+  void updateJobCronExpression(JobInfoVO scheduleJob) throws SchedulerException;
 
-  void updateJobCronExpression(ScheduleJob scheduleJob) throws SchedulerException;
+  void pauseJob(JobInfoVO scheduleJob) throws SchedulerException;
 
+  void resumeJob(JobInfoVO scheduleJob) throws SchedulerException;
 
-  void pauseJob(ScheduleJob scheduleJob) throws SchedulerException;
+  void deleteJob(JobInfoVO scheduleJob) throws SchedulerException;
 
-  void resumeJob(ScheduleJob scheduleJob) throws SchedulerException;
-
-  void deleteJob(ScheduleJob scheduleJob) throws SchedulerException;
-
-  void runJobOnce(ScheduleJob scheduleJob) throws SchedulerException;
+  void runJobOnce(JobInfoVO scheduleJob) throws SchedulerException;
 
   SchedulerMetaData getMetaData() throws SchedulerException;
 

@@ -37,11 +37,11 @@ public class ScheduleJobController {
     Integer pageNum = jobInfoVO.getPageNum();
     Integer pageSize = jobInfoVO.getPageSize();
 
-    PageInfo<JobInfoVO> jobAndTrigger = scheduleJobService
+    PageInfo<JobInfoVO> pagedJobInfo = scheduleJobService
         .getJobAndTriggerDetails(pageNum, pageSize);
     Map<String, Object> map = new HashMap<>();
-    map.put("JobAndTrigger", jobAndTrigger);
-    map.put("number", jobAndTrigger.getTotal());
+    map.put("pagedJobInfo", pagedJobInfo);
+    map.put("number", pagedJobInfo.getTotal());
     return map;
   }
 
@@ -65,7 +65,7 @@ public class ScheduleJobController {
 
     CommonResponse commonResponse = CommonResponse.failure();
     try {
-      List<ScheduleJob> jobList = scheduleJobService.getAllJobList();
+      List<JobInfoVO> jobList = scheduleJobService.getAllJobList();
       commonResponse = CommonResponse.success();
       commonResponse.setData(jobList);
     } catch (Exception e) {
@@ -80,7 +80,7 @@ public class ScheduleJobController {
 
     CommonResponse commonResponse = CommonResponse.failure();
     try {
-      List<ScheduleJob> jobList = scheduleJobService.getRunningJobList();
+      List<JobInfoVO> jobList = scheduleJobService.getRunningJobList();
       commonResponse = CommonResponse.success();
       commonResponse.setData(jobList);
     } catch (Exception e) {
@@ -91,7 +91,7 @@ public class ScheduleJobController {
   }
 
   @RequestMapping(value = "/pauseJob")
-  public CommonResponse pauseJob(ScheduleJob job) {
+  public CommonResponse pauseJob(JobInfoVO job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -106,7 +106,7 @@ public class ScheduleJobController {
   }
 
   @RequestMapping(value = "/resumeJob")
-  public CommonResponse resumeJob(ScheduleJob job) {
+  public CommonResponse resumeJob(JobInfoVO job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -121,7 +121,7 @@ public class ScheduleJobController {
   }
 
   @RequestMapping(value = "/deleteJob")
-  public CommonResponse deleteJob(ScheduleJob job) {
+  public CommonResponse deleteJob(JobInfoVO job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -136,7 +136,7 @@ public class ScheduleJobController {
   }
 
   @RequestMapping(value = "/runJob")
-  public CommonResponse runJob(ScheduleJob job) {
+  public CommonResponse runJob(JobInfoVO job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -151,7 +151,7 @@ public class ScheduleJobController {
   }
 
   @RequestMapping(value = "/addJob")
-  public CommonResponse addJob(ScheduleJob job) {
+  public CommonResponse addJob(JobInfoVO job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -166,7 +166,7 @@ public class ScheduleJobController {
   }
 
   @RequestMapping(value = "/updateJobCronExpression")
-  public CommonResponse updateJobCronExpression(ScheduleJob job) {
+  public CommonResponse updateJobCronExpression(JobInfoVO job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
