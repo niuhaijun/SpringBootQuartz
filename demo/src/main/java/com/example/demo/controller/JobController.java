@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.common.ClassUtils;
 import com.example.demo.entity.JobAndTrigger;
 import com.example.demo.entity.JobInfoVO;
 import com.example.demo.job.BaseJob;
@@ -43,11 +44,11 @@ public class JobController {
   @Qualifier("Scheduler")
   private Scheduler scheduler;
 
-  public BaseJob getClass(String classname) throws Exception {
-
-    Class<?> class1 = Class.forName(classname);
-    return (BaseJob) class1.newInstance();
-  }
+//  public BaseJob getClass(String classname) throws Exception {
+//
+//    Class<?> class1 = Class.forName(classname);
+//    return (BaseJob) class1.newInstance();
+//  }
 
   @PostMapping(value = "/addjob")
   public void addJob(JobInfoVO jobInfoVO) throws Exception {
@@ -60,7 +61,7 @@ public class JobController {
     scheduler.start();
 
     //构建job信息
-    JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass())
+    JobDetail jobDetail = JobBuilder.newJob(ClassUtils.getJobClass(jobClassName))
         .withIdentity(jobClassName, jobGroupName).build();
 
     //表达式调度构建器(即任务执行的时间)
