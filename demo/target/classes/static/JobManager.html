@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>QuartzDemo</title>
+  <link href="https://unpkg.com/element-ui@2.0.5/lib/theme-chalk/index.css" rel="stylesheet">
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="http://cdn.bootcss.com/vue-resource/1.3.4/vue-resource.js"></script>
+  <script src="https://unpkg.com/element-ui@2.0.5/lib/index.js"></script>
+
+  <style>
+    #top {
+      background: #20A0FF;
+      padding: 5px;
+      overflow: hidden
+    }
+  </style>
+
+</head>
+<body>
+<div id="test">
+
+  <div id="top">
+    <el-button @click="search" style="color:white" type="text">查询</el-button>
+    <el-button @click="handleadd" style="color:white" type="text">添加</el-button>
+    </span>
+  </div>
+
+  <br/>
+
+  <div style="margin-top:15px">
+
+    <el-table
+        :data="tableData"
+        border
+        ref="testTable"
+        style="width:100%"
+    >
+      <el-table-column
+          label="任务名称"
+          prop="job_NAME"
+          show-overflow-tooltip
+          sortable>
+      </el-table-column>
+
+      <el-table-column
+          label="任务所在组"
+          prop="job_GROUP"
+          sortable>
+      </el-table-column>
+
+      <el-table-column
+          label="任务类名"
+          prop="job_CLASS_NAME"
+          sortable>
+      </el-table-column>
+
+      <el-table-column
+          label="触发器名称"
+          prop="trigger_NAME"
+          sortable>
+      </el-table-column>
+
+      <el-table-column
+          label="触发器所在组"
+          prop="trigger_GROUP"
+          sortable>
+      </el-table-column>
+
+      <el-table-column
+          label="表达式"
+          prop="cron_EXPRESSION"
+          sortable>
+      </el-table-column>
+
+      <el-table-column
+          label="时区"
+          prop="time_ZONE_ID"
+          sortable>
+      </el-table-column>
+
+      <el-table-column label="操作" width="300">
+        <template scope="scope">
+          <el-button
+              @click="handlePause(scope.$index, scope.row)"
+              size="small"
+              type="warning">暂停
+          </el-button>
+
+          <el-button
+              @click="handleResume(scope.$index, scope.row)"
+              size="small"
+              type="info">恢复
+          </el-button>
+
+          <el-button
+              @click="handleDelete(scope.$index, scope.row)"
+              size="small"
+              type="danger">删除
+          </el-button>
+
+          <el-button
+              @click="handleUpdate(scope.$index, scope.row)"
+              size="small"
+              type="success">修改
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <div align="center">
+      <el-pagination
+          :current-page="currentPage"
+          :page-size="pagesize"
+          :page-sizes="[10, 20, 30, 40]"
+          :total="totalCount"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          layout="total, sizes, prev, pager, next, jumper">
+      </el-pagination>
+    </div>
+  </div>
+
+  <el-dialog :visible.sync="dialogFormVisible" title="添加任务">
+    <el-form :model="form">
+      <el-form-item label="任务名称" label-width="120px" style="width:35%">
+        <el-input auto-complete="off" v-model="form.jobName"></el-input>
+      </el-form-item>
+      <el-form-item label="任务分组" label-width="120px" style="width:35%">
+        <el-input auto-complete="off" v-model="form.jobGroup"></el-input>
+      </el-form-item>
+      <el-form-item label="表达式" label-width="120px" style="width:35%">
+        <el-input auto-complete="off" v-model="form.cronExpression"></el-input>
+      </el-form-item>
+    </el-form>
+    <div class="dialog-footer" slot="footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button @click="add" type="primary">确 定</el-button>
+    </div>
+  </el-dialog>
+
+  <el-dialog :visible.sync="updateFormVisible" title="修改任务">
+    <el-form :model="updateform">
+      <el-form-item label="表达式" label-width="120px" style="width:35%">
+        <el-input auto-complete="off" v-model="updateform.cronExpression"></el-input>
+      </el-form-item>
+    </el-form>
+    <div class="dialog-footer" slot="footer">
+      <el-button @click="updateFormVisible = false">取 消</el-button>
+      <el-button @click="update" type="primary">确 定</el-button>
+    </div>
+  </el-dialog>
+
+</div>
+
+<footer align="center">
+  <p>&copy; Quartz 任务管理</p>
+</footer>
+
+<script>
+  var vue = new Vue({
+    el: "#test",
+    data: {
+      //表格当前页数据
+      tableData: [],
+
+      //请求的URL
+      url: 'job/queryjob',
+
+      //默认每页数据量
+      pagesize: 10,
+
+      //当前页码
+      currentPage: 1,
+
+      //查询的页码
+      start: 1,
+
+      //默认数据总数
+      totalCount: 1000,
+
+      //添加对话框默认可见性
+      dialogFormVisible: false,
+
+      //修改对话框默认可见性
+      updateFormVisible: false,
+
+      //提交的表单
+      form: {
+        jobName: '',
+        jobGroup: '',
+        cronExpression: '',
+      },
+
+      updateform: {
+        jobName: '',
+        jobGroup: '',
+        cronExpression: '',
+      },
+    },
+
+    methods: {
+
+      //从服务器读取数据
+      loadData: function (pageNum, pageSize) {
+        this.$http.get('job/queryjob?' + 'pageNum=' + pageNum + '&pageSize=' + pageSize).then(
+            function (res) {
+              console.log(res)
+              this.tableData = res.body.JobAndTrigger.list;
+              this.totalCount = res.body.number;
+            }, function () {
+              console.log('failed');
+            });
+      },
+
+      //单行删除
+      handleDelete: function (index, row) {
+        this.$http.post('job/deletejob',
+            {"jobClassName": row.job_NAME, "jobGroupName": row.job_GROUP},
+            {emulateJSON: true}).then(function (res) {
+          this.loadData(this.currentPage, this.pagesize);
+        }, function () {
+          console.log('failed');
+        });
+      },
+
+      //暂停任务
+      handlePause: function (index, row) {
+        this.$http.post('job/pausejob',
+            {"jobClassName": row.job_NAME, "jobGroupName": row.job_GROUP},
+            {emulateJSON: true}).then(function (res) {
+          this.loadData(this.currentPage, this.pagesize);
+        }, function () {
+          console.log('failed');
+        });
+      },
+
+      //恢复任务
+      handleResume: function (index, row) {
+        this.$http.post('job/resumejob',
+            {"jobClassName": row.job_NAME, "jobGroupName": row.job_GROUP},
+            {emulateJSON: true}).then(function (res) {
+          this.loadData(this.currentPage, this.pagesize);
+        }, function () {
+          console.log('failed');
+        });
+      },
+
+      //搜索
+      search: function () {
+        this.loadData(this.currentPage, this.pagesize);
+      },
+
+      //弹出对话框
+      handleadd: function () {
+        this.dialogFormVisible = true;
+      },
+
+      //添加
+      add: function () {
+        this.$http.post('job/addjob', {
+          "jobClassName": this.form.jobName,
+          "jobGroupName": this.form.jobGroup,
+          "cronExpression": this.form.cronExpression
+        }, {emulateJSON: true}).then(function (res) {
+          this.loadData(this.currentPage, this.pagesize);
+          this.dialogFormVisible = false;
+        }, function () {
+          console.log('failed');
+        });
+      },
+
+      //更新
+      handleUpdate: function (index, row) {
+        console.log(row)
+        this.updateFormVisible = true;
+        this.updateform.jobName = row.job_CLASS_NAME;
+        this.updateform.jobGroup = row.job_GROUP;
+      },
+
+      //更新任务
+      update: function () {
+        this.$http.post
+        ('job/reschedulejob',
+            {
+              "jobClassName": this.updateform.jobName,
+              "jobGroupName": this.updateform.jobGroup,
+              "cronExpression": this.updateform.cronExpression
+            }, {emulateJSON: true}
+        ).then(function (res) {
+          this.loadData(this.currentPage, this.pagesize);
+          this.updateFormVisible = false;
+        }, function () {
+          console.log('failed');
+        });
+
+      },
+
+      //每页显示数据量变更
+      handleSizeChange: function (val) {
+        this.pagesize = val;
+        this.loadData(this.currentPage, this.pagesize);
+      },
+
+      //页码变更
+      handleCurrentChange: function (val) {
+        this.currentPage = val;
+        this.loadData(this.currentPage, this.pagesize);
+      },
+
+    },
+
+  });
+
+  //载入数据
+  vue.loadData(vue.currentPage, vue.pagesize);
+</script>
+
+</body>
+</html>
