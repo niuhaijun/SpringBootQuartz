@@ -1,14 +1,15 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.common.ClassUtils;
 import com.example.demo.entity.JobInfoVO;
 import com.example.demo.entity.ScheduleJob;
-import com.example.demo.job.QuartzJobFactory;
 import com.example.demo.mapper.JobMapper;
 import com.example.demo.service.ScheduleJobService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.quartz.CronScheduleBuilder;
@@ -92,7 +93,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
       throw new Exception("job already exists!");
     }
 
-    JobDetail jobDetail = JobBuilder.newJob(QuartzJobFactory.class)
+    JobDetail jobDetail = JobBuilder.newJob(ClassUtils.getJobClass(jobInfoVO.getJobName()))
         .withIdentity(jobInfoVO.getJobName(), jobInfoVO.getJobGroup())
         .withDescription(jobInfoVO.getJobDescription()).build();
     jobDetail.getJobDataMap().put("scheduleJob", jobInfoVO);
@@ -194,8 +195,15 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
       jobInfoVO.setJobId(job.getJobId());
       jobInfoVO.setJobDescription(job.getDesc());
     }
-    jobInfoVO.setStartTime(trigger.getStartTime().getTime());
-    jobInfoVO.setEndTime(trigger.getEndTime().getTime());
+
+    Date startDate = trigger.getStartTime();
+    Long startTime = (startDate != null) ? startDate.getTime() : null;
+    jobInfoVO.setStartTime(startTime);
+
+    Date endDate = trigger.getEndTime();
+    Long endTime = (endDate != null) ? endDate.getTime() : null;
+    jobInfoVO.setEndTime(endTime);
+
     jobInfoVO.setTriggerName(trigger.getKey().getName());
     jobInfoVO.setTriggerGroup(trigger.getKey().getGroup());
     Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
