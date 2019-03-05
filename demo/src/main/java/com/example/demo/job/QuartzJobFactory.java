@@ -51,7 +51,6 @@ public class QuartzJobFactory implements Job {
     // spring bean can be @Autowired
     sampleService.hello(jobName);
 
-
     // simulate time-consuming task
     if (jobName.equals("job_name_4") || jobName.equals("addjob")) {
       try {
