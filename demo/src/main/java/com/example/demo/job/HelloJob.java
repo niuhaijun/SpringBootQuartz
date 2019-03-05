@@ -1,19 +1,30 @@
 package com.example.demo.job;
 
+import com.example.demo.service.SampleService;
 import java.time.LocalDateTime;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
-public class HelloJob implements BaseJob {
+@DisallowConcurrentExecution
+public class HelloJob extends QuartzJobBean {
 
-  private static Logger _log = LoggerFactory.getLogger(HelloJob.class);
+  @Autowired
+  private SampleService sampleService;
 
   @Override
-  public void execute(JobExecutionContext context)
-      throws JobExecutionException {
+  protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
-    _log.info("Hello Job执行时间: " + LocalDateTime.now());
+    String UUID = java.util.UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+
+    sampleService.hello("Hello Job开始时间: " + LocalDateTime.now() + "-> " + UUID);
+    try {
+      Thread.sleep(5 * 1000L);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    sampleService.hello("Hello Job结束时间: " + LocalDateTime.now() + "-> " + UUID);
   }
 }  

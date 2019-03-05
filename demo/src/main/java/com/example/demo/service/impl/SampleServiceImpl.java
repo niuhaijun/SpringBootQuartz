@@ -14,8 +14,8 @@ public class SampleServiceImpl implements SampleService {
   private static final Logger LOG = LoggerFactory.getLogger(SampleServiceImpl.class);
 
   @Override
-  public void hello(String jobName) {
+  public void hello(String content) {
 
-    LOG.info(">>>>> jobName = [" + jobName + "]" + " excuted.");
+    LOG.info(content);
   }
 }

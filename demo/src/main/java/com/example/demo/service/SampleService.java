@@ -7,5 +7,5 @@ package com.example.demo.service;
  */
 public interface SampleService {
 
-  void hello(String jobName);
+  void hello(String content);
 }

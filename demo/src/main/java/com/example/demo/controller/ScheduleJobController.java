@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.common.CommonResponse;
 import com.example.demo.entity.JobInfoVO;
-import com.example.demo.entity.ScheduleJob;
 import com.example.demo.service.ScheduleJobService;
 import com.github.pagehelper.PageInfo;
 import java.util.HashMap;
@@ -31,6 +30,9 @@ public class ScheduleJobController {
   @Autowired
   private ScheduleJobService scheduleJobService;
 
+  /**
+   * 通过数据库查询任务信息
+   */
   @GetMapping(value = "/queryJob")
   public Map<String, Object> queryJob(JobInfoVO jobInfoVO) {
 
@@ -45,6 +47,9 @@ public class ScheduleJobController {
     return map;
   }
 
+  /**
+   * 定时器集群元数据
+   */
   @RequestMapping("/metaData")
   public CommonResponse metaData() {
 
@@ -60,6 +65,9 @@ public class ScheduleJobController {
     return commonResponse;
   }
 
+  /**
+   * 通过对象查询任务信息
+   */
   @RequestMapping("/getAllJobs")
   public CommonResponse getAllJobs() {
 
@@ -75,6 +83,9 @@ public class ScheduleJobController {
     return commonResponse;
   }
 
+  /**
+   * 查询正在运行的任务
+   */
   @RequestMapping("/getRunningJobs")
   public CommonResponse getRunningJobs() {
 

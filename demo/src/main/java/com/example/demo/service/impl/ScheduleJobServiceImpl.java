@@ -2,7 +2,6 @@ package com.example.demo.service.impl;
 
 import com.example.demo.common.ClassUtils;
 import com.example.demo.entity.JobInfoVO;
-import com.example.demo.entity.ScheduleJob;
 import com.example.demo.mapper.JobMapper;
 import com.example.demo.service.ScheduleJobService;
 import com.github.pagehelper.PageHelper;
@@ -190,10 +189,13 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     jobInfoVO.setJobGroup(jobKey.getGroup());
     jobInfoVO.setJobClass(jobDetail.getJobClass().getName());
     jobInfoVO.setJobDescription(jobDetail.getDescription());
-    ScheduleJob job = (ScheduleJob) jobDetail.getJobDataMap().get("scheduleJob");
+    JobInfoVO job = null;
+    if (jobDetail.getJobDataMap().get("scheduleJob") instanceof JobInfoVO) {
+      job = (JobInfoVO) jobDetail.getJobDataMap().get("scheduleJob");
+    }
     if (job != null) {
       jobInfoVO.setJobId(job.getJobId());
-      jobInfoVO.setJobDescription(job.getDesc());
+      jobInfoVO.setJobDescription(job.getJobDescription());
     }
 
     Date startDate = trigger.getStartTime();
