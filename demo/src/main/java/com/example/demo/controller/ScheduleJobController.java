@@ -1,24 +1,49 @@
 package com.example.demo.controller;
 
 import com.example.demo.common.CommonResponse;
+import com.example.demo.entity.JobInfoVO;
 import com.example.demo.entity.ScheduleJob;
 import com.example.demo.service.ScheduleJobService;
+import com.github.pagehelper.PageInfo;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.quartz.SchedulerMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @Author: niuhaijun
+ * @Date: 2019-03-04 17:37
+ * @Version 1.0
+ */
 @RestController
-@RequestMapping("/api")
-public class RestfulController {
+@RequestMapping(value = "/job")
+public class ScheduleJobController {
 
-  private static Logger logger = LoggerFactory.getLogger(RestfulController.class);
+  private static final Logger logger = LoggerFactory.getLogger(ScheduleJobController.class);
 
+  /**  汇总的方法          */
   @Autowired
   private ScheduleJobService scheduleJobService;
+
+  @GetMapping(value = "/queryJob")
+  public Map<String, Object> queryJob(JobInfoVO jobInfoVO) {
+
+    Integer pageNum = jobInfoVO.getPageNum();
+    Integer pageSize = jobInfoVO.getPageSize();
+
+    PageInfo<JobInfoVO> jobAndTrigger = scheduleJobService
+        .getJobAndTriggerDetails(pageNum, pageSize);
+    Map<String, Object> map = new HashMap<>();
+    map.put("JobAndTrigger", jobAndTrigger);
+    map.put("number", jobAndTrigger.getTotal());
+    return map;
+  }
 
   @RequestMapping("/metaData")
   public CommonResponse metaData() {
@@ -125,13 +150,28 @@ public class RestfulController {
     return commonResponse;
   }
 
-  @RequestMapping(value = "/saveOrUpdate")
-  public CommonResponse saveOrUpdate(ScheduleJob job) {
+  @RequestMapping(value = "/addJob")
+  public CommonResponse addJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
     try {
-      scheduleJobService.saveOrUpdate(job);
+      scheduleJobService.addJob(job);
+      commonResponse = CommonResponse.success();
+    } catch (Exception e) {
+      commonResponse.setMsg(e.getMessage());
+      logger.error("updateCron ex:", e);
+    }
+    return commonResponse;
+  }
+
+  @RequestMapping(value = "/updateJobCronExpression")
+  public CommonResponse updateJobCronExpression(ScheduleJob job) {
+
+    logger.info("params, job = {}", job);
+    CommonResponse commonResponse = CommonResponse.failure();
+    try {
+      scheduleJobService.updateJobCronExpression(job);
       commonResponse = CommonResponse.success();
     } catch (Exception e) {
       commonResponse.setMsg(e.getMessage());

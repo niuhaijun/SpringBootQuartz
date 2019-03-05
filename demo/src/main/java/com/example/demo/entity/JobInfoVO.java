@@ -1,80 +1,45 @@
 package com.example.demo.entity;
 
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * @Author: niuhaijun
- * @Date: 2019-03-04 17:41
+ * @Date: 2019-03-05 12:59
  * @Version 1.0
  */
+@Data
 public class JobInfoVO implements Serializable {
 
-  private static final long serialVersionUID = -656999777807789548L;
+  private static final Long serialVersionUID = -12654128415L;
 
-  private String jobClassName;
-  private String jobGroupName;
+  /** 任务ID */
+  private String jobId;
+
+  /** 任务名称 */
+  private String jobName;
+  /** 任务分组 */
+  private String jobGroup;
+  /** 任务执行方法 */
+  private String jobClass;
+  /** 任务描述 */
+  private String jobDescription;
+  /** 触发器名称 */
+  private String triggerName;
+  /** 触发器分组 */
+  private String triggerGroup;
+  /** 开始时间 */
+  private Long startTime;
+  /** 结束时间 */
+  private Long endTime;
+  /** 触发器状态 */
+  private String triggerState;
+  /** cron 表达式 */
   private String cronExpression;
-
+  /** 时区 */
+  private String timeZoneId;
+  /** 分页号 */
   private Integer pageNum;
+  /** 页面数据量 */
   private Integer pageSize;
-
-  public String getJobClassName() {
-
-    return jobClassName;
-  }
-
-  public void setJobClassName(String jobClassName) {
-
-    this.jobClassName = jobClassName;
-  }
-
-  public String getJobGroupName() {
-
-    return jobGroupName;
-  }
-
-  public void setJobGroupName(String jobGroupName) {
-
-    this.jobGroupName = jobGroupName;
-  }
-
-  public String getCronExpression() {
-
-    return cronExpression;
-  }
-
-  public void setCronExpression(String cronExpression) {
-
-    this.cronExpression = cronExpression;
-  }
-
-  public Integer getPageNum() {
-
-    return pageNum;
-  }
-
-  public void setPageNum(Integer pageNum) {
-
-    this.pageNum = pageNum;
-  }
-
-  public Integer getPageSize() {
-
-    return pageSize;
-  }
-
-  public void setPageSize(Integer pageSize) {
-
-    this.pageSize = pageSize;
-  }
-
-  @Override
-  public String toString() {
-
-    return "JobInfoVO{" +
-        "jobClassName='" + jobClassName + '\'' +
-        ", jobGroupName='" + jobGroupName + '\'' +
-        ", cronExpression='" + cronExpression + '\'' +
-        '}';
-  }
 }

@@ -1,7 +1,7 @@
 package com.example.demo.job;
 
 import com.example.demo.entity.ScheduleJob;
-import com.example.demo.service.SampleService;
+import com.example.demo.service.impl.SampleServiceImpl;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.quartz.Job;
@@ -32,7 +32,7 @@ public class QuartzJobFactory implements Job {
   }
 
   @Autowired
-  private SampleService sampleService;
+  private SampleServiceImpl sampleServiceImpl;
 
   // simulate data from db
   public static List<ScheduleJob> getInitAllJobs() {
@@ -49,7 +49,7 @@ public class QuartzJobFactory implements Job {
 
     // execute task inner quartz system
     // spring bean can be @Autowired
-    sampleService.hello(jobName);
+    sampleServiceImpl.hello(jobName);
 
     // simulate time-consuming task
     if (jobName.equals("job_name_4") || jobName.equals("addjob")) {
