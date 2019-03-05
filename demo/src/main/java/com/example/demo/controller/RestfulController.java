@@ -66,7 +66,7 @@ public class RestfulController {
   }
 
   @RequestMapping(value = "/pauseJob")
-  public Object pauseJob(ScheduleJob job) {
+  public CommonResponse pauseJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -81,7 +81,7 @@ public class RestfulController {
   }
 
   @RequestMapping(value = "/resumeJob")
-  public Object resumeJob(ScheduleJob job) {
+  public CommonResponse resumeJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -96,7 +96,7 @@ public class RestfulController {
   }
 
   @RequestMapping(value = "/deleteJob")
-  public Object deleteJob(ScheduleJob job) {
+  public CommonResponse deleteJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -111,7 +111,7 @@ public class RestfulController {
   }
 
   @RequestMapping(value = "/runJob")
-  public Object runJob(ScheduleJob job) {
+  public CommonResponse runJob(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
@@ -126,7 +126,7 @@ public class RestfulController {
   }
 
   @RequestMapping(value = "/saveOrUpdate")
-  public Object saveOrUpdate(ScheduleJob job) {
+  public CommonResponse saveOrUpdate(ScheduleJob job) {
 
     logger.info("params, job = {}", job);
     CommonResponse commonResponse = CommonResponse.failure();
